@@ -46,4 +46,6 @@ module DslEvaluator
       end
     end
   end
+
+  extend self
 end
