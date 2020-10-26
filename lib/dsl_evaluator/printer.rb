@@ -51,9 +51,9 @@ module DslEvaluator
       content_lines[top..bottom].each_with_index do |line_content, index|
         current_line = top+index+1
         if current_line == line_number
-          printf("%#{lpad}d %s\n".color(:red), line_number, line_content)
+          printf("%#{lpad}d %s\n".color(:red), current_line, line_content)
         else
-          printf("%#{lpad}d %s\n", line_number, line_content)
+          printf("%#{lpad}d %s\n", current_line, line_content)
         end
       end
     end
