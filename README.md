@@ -4,14 +4,22 @@ Small module to help with DSL evaluation. Notably, it produces a human-friendly 
 
 ## Usage
 
-```ruby
-require "dsl_evaluator"
-DslEvaluator.backtrace_reject = "lib/my_gem" # optional
+Example usage:
 
-class DslBuilder
+```ruby
+DslEvaluator.configure do |config|
+  config.backtrace.reject_pattern = "/lib/lono"
+  config.logger = Lono.logger
+  config.on_exception = :exit
+  config.root = Lono.root
+end
+
+
+class Dsl
+  include DslEvaluator
   def build
     path = "/path/to/user/provided/dsl/file.rb"
-    evaluate_file(path)
+    evaluate_file(path) # from DslEvaluator module
   end
 end
 ```
