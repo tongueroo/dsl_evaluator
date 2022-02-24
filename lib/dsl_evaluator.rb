@@ -1,8 +1,16 @@
-require "dsl_evaluator/version"
-require "rainbow/ext/string"
+require 'active_support'
+require 'active_support/core_ext/class'
+require 'active_support/core_ext/hash'
+require 'active_support/core_ext/string'
+require 'dsl_evaluator/version'
+require 'memoist'
+require 'rainbow/ext/string'
+
+require "dsl_evaluator/autoloader"
+DslEvaluator::Autoloader.setup
 
 module DslEvaluator
-  autoload :Printer, "dsl_evaluator/printer"
+  extend Memoist
 
   class Error < StandardError; end
 
@@ -11,18 +19,30 @@ module DslEvaluator
     instance_eval(IO.read(path), path)
   rescue Exception => e
     Printer.new(e).print
-    puts "\nFull error:"
-    raise
+    case config.on_exception
+    when :rescue
+      # do nothing
+    when :exit
+      exit 1
+    else # :raise
+      raise
+    end
   end
 
-  @@backtrace_reject = nil
-  def backtrace_reject
-    @@backtrace_reject
+  mattr_accessor :backtrace_reject
+
+  def logger
+    config.logger
   end
 
-  def backtrace_reject=(v)
-    @@backtrace_reject = v
+  def configure(&block)
+    App.instance.configure(&block)
   end
+
+  def config
+    App.instance.config
+  end
+  memoize :config
 
   extend self
 end

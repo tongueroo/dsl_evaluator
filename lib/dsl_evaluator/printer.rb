@@ -4,44 +4,14 @@ module DslEvaluator
       @error = error
     end
 
-    def message
-      @error.message
-    end
-
     # Prints out a user friendly task_definition error message
     def print
-      print_source(info)
-    end
-
-    def info
-      @error.message.include?("syntax") ? info_from_message : info_from_backtrace
-    end
-
-    def info_from_message
-      error_info = @error.message
-      path, line_number, _ = error_info.split(':')
-      {path: path, line_number: line_number}
-    end
-
-    def info_from_backtrace
-      lines = @error.backtrace
-
-      backtrace_reject = DslEvaluator.backtrace_reject
-      lines = lines.reject { |l| l.include?(backtrace_reject) } if backtrace_reject
-      lines = lines.reject { |l| l.include?("lib/dsl_evaluator") } # ignore internal lib/dsl_evaluator backtrace lines
-
-      error_info = lines.first
-      path, line_number, _ = error_info.split(':')
-      {path: path, line_number: line_number}
-    end
-
-    def print_source(info={})
+      info = error_info
       path = info[:path]
       line_number = info[:line_number].to_i
 
-      puts "Error evaluating #{path}:".color(:red)
-      puts @error.message
-      puts "Here's the line in #{path} with the error:\n\n"
+      logger.error "Error evaluating #{pretty_path(path)}".color(:red)
+      logger.error "Here's the line with the error:\n\n"
 
       contents = IO.read(path)
       content_lines = contents.split("\n")
@@ -56,6 +26,71 @@ module DslEvaluator
           printf("%#{lpad}d %s\n", current_line, line_content)
         end
       end
+
+      logger.info "Rerun with FULL_BACKTRACE=1 to see full backtrace" unless ENV['FULL_BACKTRACE']
+    end
+
+    def error_info
+      @error.message.include?("syntax") ? info_from_message : info_from_backtrace
+    end
+
+    def info_from_message
+      error_info = @error.message
+      path, line_number, _ = error_info.split(':')
+      {path: path, line_number: line_number}
+    end
+
+    # Grab info so can print out user friendly error message
+    #
+    # Backtrace lines are different for OSes:
+    #
+    #   windows: "C:/Ruby31-x64/lib/ruby/gems/3.1.0/gems/terraspace-1.1.1/lib/terraspace/builder.rb:34:in `build'"
+    #   linux: "/home/ec2-user/.rvm/gems/ruby-3.0.3/gems/terraspace-1.1.1/lib/terraspace/compiler/dsl/syntax/mod.rb:4:in `<module:Mod>'"
+    #
+    def info_from_backtrace
+      lines = @error.backtrace
+      if ENV['FULL_BACKTRACE']
+        logger.error @error.message.color(:red)
+        logger.error lines.join("\n")
+      end
+
+      # Keep DslEvaluator.backtrace_reject for backwards compatibility
+      backtrace_reject = config.backtrace.reject_pattern || DslEvaluator.backtrace_reject
+      if backtrace_reject
+        lines = lines.reject do |l|
+          if backtrace_reject.is_a?(String)
+            l.include?(backtrace_reject)
+          else
+            l.match(backtrace_reject)
+          end
+        end
+      end
+      lines = lines.reject { |l| l.include?("lib/dsl_evaluator") } # ignore internal lib/dsl_evaluator backtrace lines
+
+      error_info = lines.first
+      parts = error_info.split(':')
+      windows = error_info.match(/^[a-zA-Z]:/)
+      path = windows ? parts[1] : parts[0]
+      line_number = windows ? parts[2] : parts[1]
+      line_number = line_number.to_i
+
+      {path: path, line_number: line_number}
+    end
+
+    def pretty_path(path)
+      path.sub("#{config.root}/",'')
+    end
+
+    def logger
+      config.logger
+    end
+
+    def config
+      DslEvaluator.config
+    end
+
+    def message
+      @error.message
     end
   end
 end

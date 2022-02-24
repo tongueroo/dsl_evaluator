@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Tung Nguyen"]
   spec.email         = ["tongueroo@gmail.com"]
 
-  spec.summary       = "Small module to help with DSL evaluation. It produces a human-friendly backtrace error"
+  spec.summary       = "DSL evaluation library. It produces a human-friendly backtrace error"
   spec.homepage      = "https://github.com/tongueroo/dsl_evaluator"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
@@ -22,5 +22,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "activesupport"
+  spec.add_dependency "memoist"
   spec.add_dependency "rainbow"
 end
