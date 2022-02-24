@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [0.2.0] - 2022-02-24
+- [#3](https://github.com/tongueroo/dsl_evaluator/pull/3) major improvements: configure ability
+
 ## [0.1.3]
 - #2 fix current line number printed
 
