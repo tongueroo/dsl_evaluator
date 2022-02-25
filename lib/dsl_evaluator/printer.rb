@@ -52,10 +52,10 @@ module DslEvaluator
       if ENV['FULL_BACKTRACE']
         logger.error @error.message.color(:red)
         logger.error lines.join("\n")
+      else
+        lines = reject(lines)
+        lines = select(lines)
       end
-
-      lines = reject(lines)
-      lines = select(lines)
 
       error_info = lines.first
       parts = error_info.split(':')
