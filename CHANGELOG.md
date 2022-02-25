@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [0.2.2] - 2022-02-25
+- dont filter lines with FULL_BACKTRACE=1
+
 ## [0.2.1] - 2022-02-25
 - [#4](https://github.com/tongueroo/dsl_evaluator/pull/4) add config.select_pattern option
 
