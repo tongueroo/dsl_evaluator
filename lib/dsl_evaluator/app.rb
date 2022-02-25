@@ -21,6 +21,7 @@ module DslEvaluator
 
       config.backtrace = ActiveSupport::OrderedOptions.new
       config.backtrace.reject_pattern = nil # dont use .reject. Seems its used internally by ActiveSupport::OrderedOptions
+      config.backtrace.select_pattern = nil
 
       config
     end

@@ -54,18 +54,8 @@ module DslEvaluator
         logger.error lines.join("\n")
       end
 
-      # Keep DslEvaluator.backtrace_reject for backwards compatibility
-      backtrace_reject = config.backtrace.reject_pattern || DslEvaluator.backtrace_reject
-      if backtrace_reject
-        lines = lines.reject do |l|
-          if backtrace_reject.is_a?(String)
-            l.include?(backtrace_reject)
-          else
-            l.match(backtrace_reject)
-          end
-        end
-      end
-      lines = lines.reject { |l| l.include?("lib/dsl_evaluator") } # ignore internal lib/dsl_evaluator backtrace lines
+      lines = reject(lines)
+      lines = select(lines)
 
       error_info = lines.first
       parts = error_info.split(':')
@@ -75,6 +65,35 @@ module DslEvaluator
       line_number = line_number.to_i
 
       {path: path, line_number: line_number}
+    end
+
+    def reject(lines)
+      # Keep DslEvaluator.backtrace_reject for backwards compatibility
+      pattern = config.backtrace.reject_pattern || DslEvaluator.backtrace_reject
+      return lines unless pattern
+
+      lines.reject! do |l|
+        if pattern.is_a?(String)
+          l.include?(pattern)
+        else
+          l.match(pattern)
+        end
+      end
+      # Always ignore internal lib/dsl_evaluator backtrace lines
+      lines.reject { |l| l.include?("lib/dsl_evaluator") }
+    end
+
+    def select(lines)
+      pattern = config.backtrace.select_pattern
+      return unless pattern
+
+      lines.select do |l|
+        if pattern.is_a?(String)
+          l.include?(pattern)
+        else
+          l.match(pattern)
+        end
+      end
     end
 
     def pretty_path(path)
