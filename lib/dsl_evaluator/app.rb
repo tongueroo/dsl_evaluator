@@ -1,3 +1,5 @@
+require "singleton"
+
 module DslEvaluator
   class App
     extend Memoist

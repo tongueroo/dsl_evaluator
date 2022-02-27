@@ -1,3 +1,5 @@
+require "zeitwerk"
+
 module DslEvaluator
   class Autoloader
     class Inflector < Zeitwerk::Inflector
