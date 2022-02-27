@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [0.2.3] - 2022-02-27
+- [#5](https://github.com/tongueroo/dsl_evaluator/pull/5) add zeitwerk dependency
+
 ## [0.2.2] - 2022-02-25
 - dont filter lines with FULL_BACKTRACE=1
 
