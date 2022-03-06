@@ -9,26 +9,14 @@ module DslEvaluator
       info = error_info
       path = info[:path]
       line_number = info[:line_number].to_i
-
       logger.error "ERROR: #{@error.message}".color(:red)
       logger.error "Error evaluating #{pretty_path(path)}".color(:red)
       logger.error "Here's the line with the error:\n\n"
+      print_code(path, line_number)
+    end
 
-      contents = IO.read(path)
-      content_lines = contents.split("\n")
-      context = 5 # lines of context
-      top, bottom = [line_number-context-1, 0].max, line_number+context-1
-      lpad = content_lines.size.to_s.size
-      content_lines[top..bottom].each_with_index do |line_content, index|
-        current_line = top+index+1
-        if current_line == line_number
-          printf("%#{lpad}d %s\n".color(:red), current_line, line_content)
-        else
-          printf("%#{lpad}d %s\n", current_line, line_content)
-        end
-      end
-
-      logger.info "Rerun with FULL_BACKTRACE=1 to see full backtrace" unless ENV['FULL_BACKTRACE']
+    def print_code(path, line_number)
+      DslEvaluator.print_code(path, line_number)
     end
 
     def error_info

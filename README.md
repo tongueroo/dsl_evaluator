@@ -14,7 +14,6 @@ DslEvaluator.configure do |config|
   config.root = Lono.root
 end
 
-
 class Dsl
   include DslEvaluator
   def build
@@ -22,6 +21,14 @@ class Dsl
     evaluate_file(path) # from DslEvaluator module
   end
 end
+```
+
+For other libraries where printing the code and context lines around the code is useful, you can use:
+
+```ruby
+path = "replace with path to file"
+line_number = "replace with line number. usually can get the exception.message"
+DslEvaluator.print_code(path, line_number)
 ```
 
 ## Installation
