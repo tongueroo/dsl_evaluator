@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [0.2.5] - 2022-03-06
+- [#6](https://github.com/tongueroo/dsl_evaluator/pull/6) DslEvaluator.print_code public method
+
 ## [0.2.4] - 2022-03-03
 - print error message as part of trace
 
