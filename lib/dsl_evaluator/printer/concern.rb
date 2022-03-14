@@ -1,6 +1,8 @@
 class DslEvaluator::Printer
   module Concern
     # So other libraries can use this method
+    # The `print_code` method understands "polymorphic" arguments.
+    # See README.md
     def print_code(*args)
       if args.size == 2 # print_code(path, line_number)
         path, line_number = args
