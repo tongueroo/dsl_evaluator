@@ -9,8 +9,8 @@ RSpec.describe DslEvaluator::Printer do
       error
     end
 
-    it "info" do
-      expect(printer.info).to eq({
+    it "error_info" do
+      expect(printer.error_info).to eq({
         :path=>"/tmp/infra/config/app.rb",
         :line_number=>"3"
       })
