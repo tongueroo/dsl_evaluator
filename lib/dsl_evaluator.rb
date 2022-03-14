@@ -11,6 +11,7 @@ DslEvaluator::Autoloader.setup
 
 module DslEvaluator
   extend Memoist
+  include Printer::Concern
 
   class Error < StandardError; end
 
@@ -43,37 +44,6 @@ module DslEvaluator
     App.instance.config
   end
   memoize :config
-
-  # So other libraries can use this method
-  def print_code(path, line_number)
-    check_line_number!(line_number)
-    line_number = line_number.to_i
-    contents = IO.read(path)
-    content_lines = contents.split("\n")
-    context = 5 # lines of context
-    top, bottom = [line_number-context-1, 0].max, line_number+context-1
-    lpad = content_lines.size.to_s.size
-    content_lines[top..bottom].each_with_index do |line_content, index|
-      current_line = top+index+1
-      if current_line == line_number
-        printf("%#{lpad}d %s\n".color(:red), current_line, line_content)
-      else
-        printf("%#{lpad}d %s\n", current_line, line_content)
-      end
-    end
-
-    logger.info "Rerun with FULL_BACKTRACE=1 to see full backtrace" unless ENV['FULL_BACKTRACE']
-  end
-
-  def check_line_number!(line_number)
-    return line_number unless line_number.is_a?(String)
-    integer = line_number.to_i
-    if integer == 0
-      logger.error "ERROR: Think you accidentally passed in a String for the line_number: #{line_number}".color(:red)
-      puts caller
-      exit 1
-    end
-  end
 
   extend self
 end

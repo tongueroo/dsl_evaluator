@@ -23,7 +23,20 @@ class Dsl
 end
 ```
 
-For other libraries where printing the code and context lines around the code is useful, you can use:
+## Print Code Helper
+
+For other libraries where printing the code and context lines around the code is useful, you can use `DslEvaluator.print_code`.
+
+The `print_code` method understands "polymorphic" arguments.
+
+1. If the caller line info is part of a standard ruby backtrace line. Example of this is in ufo [helpers/ecr.rb](https://github.com/boltops-tools/ufo/blob/master/lib/ufo/task_definition/helpers/ecr.rb)
+
+```ruby
+call_line = ufo_config_call_line
+DslEvaluator.print_code(call_line)
+```
+
+2. If the caller line info is custom.  Example of this is in ufo [erb/yaml.rb](https://github.com/boltops-tools/ufo/blob/9247b77c6ad2a3a6307155a2a130308a24668333/lib/ufo/task_definition/erb/yaml.rb#L16)
 
 ```ruby
 path = "replace with path to file"
