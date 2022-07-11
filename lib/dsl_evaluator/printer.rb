@@ -74,7 +74,7 @@ module DslEvaluator
 
     def select(lines)
       pattern = config.backtrace.select_pattern
-      return unless pattern
+      return lines unless pattern
 
       lines.select do |l|
         if pattern.is_a?(String)
