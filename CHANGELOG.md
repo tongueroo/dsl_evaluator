@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [0.3.1] - 2022-07-11
+- [#8](https://github.com/tongueroo/dsl_evaluator/pull/8) fix select pattern when not set
+
 ## [0.3.0] - 2022-03-14
 - [#7](https://github.com/tongueroo/dsl_evaluator/pull/7) Print code improvements
 
