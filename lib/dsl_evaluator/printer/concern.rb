@@ -22,7 +22,7 @@ class DslEvaluator::Printer
       check_line_number!(line_number)
       line_number = line_number.to_i
 
-      logger.info "Here's the original caller line from:"
+      logger.info "Here's the original caller line #{line_number} from:"
       logger.info pretty_path(path).color(:green)
 
       contents = IO.read(path)

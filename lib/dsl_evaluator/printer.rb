@@ -11,7 +11,7 @@ module DslEvaluator
       line_number = info[:line_number].to_i
       logger.error "ERROR: #{@error.message}".color(:red)
       logger.error "Error evaluating #{pretty_path(path)}".color(:red)
-      logger.error "Here's the line with the error:\n\n"
+      logger.error "Here's line #{line_number} with the error:\n\n"
       print_code(path, line_number)
     end
 
