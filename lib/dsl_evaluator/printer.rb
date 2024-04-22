@@ -25,7 +25,7 @@ module DslEvaluator
 
     def info_from_message
       error_info = @error.message
-      path, line_number, _ = error_info.split(':')
+      path, line_number, _ = error_info.split(":")
       {path: path, line_number: line_number}
     end
 
@@ -38,7 +38,7 @@ module DslEvaluator
     #
     def info_from_backtrace
       lines = @error.backtrace
-      if ENV['FULL_BACKTRACE']
+      if ENV["FULL_BACKTRACE"]
         logger.error @error.message.color(:red)
         logger.error lines.join("\n")
       else
@@ -47,7 +47,7 @@ module DslEvaluator
       end
 
       error_info = lines.first
-      parts = error_info.split(':')
+      parts = error_info.split(":")
       windows = error_info.match(/^[a-zA-Z]:/)
       path = windows ? parts[1] : parts[0]
       line_number = windows ? parts[2] : parts[1]
@@ -86,7 +86,7 @@ module DslEvaluator
     end
 
     def pretty_path(path)
-      path.sub("#{config.root}/",'')
+      path.sub("#{config.root}/", "")
     end
 
     def logger

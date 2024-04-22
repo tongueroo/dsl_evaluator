@@ -1,10 +1,10 @@
-require 'active_support'
-require 'active_support/core_ext/class'
-require 'active_support/core_ext/hash'
-require 'active_support/core_ext/string'
-require 'dsl_evaluator/version'
-require 'memoist'
-require 'rainbow/ext/string'
+require "active_support"
+require "active_support/core_ext/class"
+require "active_support/core_ext/hash"
+require "active_support/core_ext/string"
+require "dsl_evaluator/version"
+require "memoist"
+require "rainbow/ext/string"
 
 require "dsl_evaluator/autoloader"
 DslEvaluator::Autoloader.setup

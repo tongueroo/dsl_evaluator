@@ -15,7 +15,7 @@ module DslEvaluator
 
       config.logger = default_logger
       config.logger.formatter = Logger::Formatter.new
-      config.logger.level = ENV['DSL_EVALUATOR_LOG_LEVEL'] || :info
+      config.logger.level = ENV["DSL_EVALUATOR_LOG_LEVEL"] || :info
 
       config.on_exception = :raise
 
@@ -29,7 +29,7 @@ module DslEvaluator
     end
 
     def default_logger
-      Logger.new(ENV['DSL_EVALUATOR_LOG_PATH'] || $stderr)
+      Logger.new(ENV["DSL_EVALUATOR_LOG_PATH"] || $stderr)
     end
     memoize :default_logger
 
